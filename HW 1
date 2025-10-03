@@ -1,0 +1,28 @@
+import pygame
+
+pygame.init()
+
+screen=pygame.display.set_mode((800,600))
+pygame.display.set_caption("Homework 1")
+
+gameloop=True
+
+while gameloop:
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            gameloop=False
+
+    screen.fill("black")
+    #middle horizontal box
+    snake=pygame.draw.rect(screen,"light pink",(300,300,120,20))
+    #right vertical box
+    snake=pygame.draw.rect(screen,"light green",(400,300,20,120))
+    #top horizontal box
+    snake=pygame.draw.rect(screen,"purple",(300,200,120,20))
+    #left vertical 
+    snake=pygame.draw.rect(screen,"white",(300,200,20,120))
+    #bottom horizontal
+    snake=pygame.draw.rect(screen,"blue",(300,400,120,20))
+    pygame.display.flip()
+
+pygame.quit()
