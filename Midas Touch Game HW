@@ -1,0 +1,93 @@
+import pygame
+
+pygame.init()
+
+# declaring constants
+WIDTH=600
+HEIGHT=600
+
+screen=pygame.display.set_mode((WIDTH,HEIGHT))
+pygame.display.set_caption("Midas Touch Game-HW 2")
+
+# declaring variables
+midas_x=300
+midas_y=300
+rec1_x=100
+rec1_y=500
+rec2_x=500
+rec2_y=500
+rec3_x=500
+rec3_y=100
+rec4_x=100
+rec4_y=100
+
+speed=10
+
+screen.fill("white")
+
+midas=pygame.draw.rect(screen,"gold",(midas_x,midas_y,50,50))
+rec1=pygame.draw.rect(screen,"red",(rec1_x,rec1_y,50,50))
+rec2=pygame.draw.rect(screen,"blue",(rec2_x,rec2_y,50,50))
+rec3=pygame.draw.rect(screen,"green",(rec3_x,rec3_y,50,50))
+rec4=pygame.draw.rect(screen,"pink",(rec4_x,rec4_y,50,50))
+rec1_color="red"
+rec2_color="blue"
+rec3_color="green"
+rec4_color="pink"
+
+midas_dx=0
+midas_dy=0
+
+FPS=10
+clock=pygame.time.Clock()
+sound=pygame.mixer.Sound("magic-03-278824.mp3")
+
+gameloop=True
+
+while gameloop:
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            gameloop=False
+    
+    if event.type==pygame.KEYDOWN:
+        if event.key==pygame.K_RIGHT:
+            midas_dx=1*speed
+            midas_dy=0
+        if event.key==pygame.K_LEFT:
+            midas_dx=-1*speed
+            midas_dy=0
+        if event.key==pygame.K_DOWN:
+            midas_dx=0
+            midas_dy=1*speed
+        if event.key==pygame.K_UP:
+            midas_dx=0
+            midas_dy=-1*speed
+    midas_x=midas_x+midas_dx
+    midas_y=midas_y+midas_dy
+    
+    screen.fill("white")
+
+    if midas.colliderect(rec1):
+        sound.play()
+        rec1_color="gold"
+    if midas.colliderect(rec2):
+        sound.play()
+        rec2_color="gold"
+    if midas.colliderect(rec3):
+        sound.play()
+        rec3_color="gold"
+    if midas.colliderect(rec4):
+        sound.play()
+        rec4_color="gold"
+
+    midas=pygame.draw.rect(screen,"gold",(midas_x,midas_y,50,50))
+    rec1=pygame.draw.rect(screen,rec1_color,(rec1_x,rec1_y,50,50))
+    rec2=pygame.draw.rect(screen,rec2_color,(rec2_x,rec2_y,50,50))
+    rec3=pygame.draw.rect(screen,rec3_color,(rec3_x,rec3_y,50,50))
+    rec4=pygame.draw.rect(screen,rec4_color,(rec4_x,rec4_y,50,50))
+   
+    pygame.display.flip()
+    clock.tick(FPS)
+
+pygame.quit()
+
