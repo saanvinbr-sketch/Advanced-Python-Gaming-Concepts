@@ -23,6 +23,8 @@ bricks_group=pygame.sprite.Group()
 FPS=30
 clock=pygame.time.Clock()
 gameloop=True
+gameover=False
+gamewin=False
 
 total_rows = 7
 total_columns = 7
@@ -46,8 +48,31 @@ while gameloop:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             gameloop=False
+    for paddle_ball in paddle_ball_group:
+        if paddle_ball.lives==0:
+            Gameover_text=font.render("Gameover!", True, "white")
+            gameover_rect=Gameover_text.get_rect(center=(600,350))
+            gameover=True
     
     screen.fill("black")
+
+    if paddle_ball.score==490:
+        Gamewin_text=font.render("Congratulations!", True, "white")
+        gamewin=True
+        gamewin_rect=Gamewin_text.get_rect(center=(600,350))
+    if gameover:
+        screen.fill("black")
+        screen.blit(Gameover_text,gameover_rect)
+        pygame.display.update()
+        pygame.time.delay(2000)
+        gameloop=False
+    
+    if gamewin:
+        screen.fill("black")
+        screen.blit(Gamewin_text, gamewin_rect)
+        pygame.display.update()
+        pygame.time.delay(2000)
+        gameloop=False
 
     pygame.draw.line(screen, "white", (0,60), (1200,60), 4)
     pygame.draw.line(screen, "white", (0, 600), (1200,600), 4)
@@ -60,13 +85,7 @@ while gameloop:
     lives_rect=Lives_text.get_rect(center=(1100,50))
     screen.blit(Lives_text, lives_rect)
 
-    # if pygame.sprite.groupcollide(paddle_ball_group, bricks_group, True, True):
-    #     bricks_group.remove()
-    #     paddle_ball.score=paddle_ball.score + 10
-    #     paddle_ball.speed_y *= -1
-
     if pygame.sprite.spritecollide(paddle_ball, bricks_group, True):
-        bricks_group.remove()
         paddle_ball.score=paddle_ball.score + 10
         paddle_ball.speed_y *= -1
     
