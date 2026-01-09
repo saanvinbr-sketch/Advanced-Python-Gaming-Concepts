@@ -40,12 +40,39 @@ for r in range(0,total_rows):
         b = Bricks(x,y,bricks_group)
         bricks_group.add(b)
 
+font=pygame.font.Font(None, 36)
+
 while gameloop:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             gameloop=False
     
     screen.fill("black")
+
+    pygame.draw.line(screen, "white", (0,60), (1200,60), 4)
+    pygame.draw.line(screen, "white", (0, 600), (1200,600), 4)
+
+    Score_text=font.render("Score: " +str(paddle_ball.score), True, "white")
+    score_rect=Score_text.get_rect(center=(600,50))
+    screen.blit(Score_text, score_rect)
+
+    Lives_text=font.render("Lives: "+str(paddle_ball.lives), True, "white")
+    lives_rect=Lives_text.get_rect(center=(1100,50))
+    screen.blit(Lives_text, lives_rect)
+
+    # if pygame.sprite.groupcollide(paddle_ball_group, bricks_group, True, True):
+    #     bricks_group.remove()
+    #     paddle_ball.score=paddle_ball.score + 10
+    #     paddle_ball.speed_y *= -1
+
+    if pygame.sprite.spritecollide(paddle_ball, bricks_group, True):
+        bricks_group.remove()
+        paddle_ball.score=paddle_ball.score + 10
+        paddle_ball.speed_y *= -1
+    
+    if pygame.sprite.spritecollide(paddle_ball, paddle_group, False):
+        paddle_ball.speed_y *= -1
+
 
     paddle_ball_group.update()
     paddle_ball_group.draw(screen)
