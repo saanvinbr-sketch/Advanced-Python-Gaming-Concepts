@@ -1,0 +1,52 @@
+import pygame
+import pymunk
+import pymunk.pygame_util
+
+def create_floor(space):
+    """Creates a static floor for the balls to bounce on."""
+    floor = pymunk.Segment(space.static_body, (50, 500), (750, 500), 5)
+    floor.elasticity = 1.0
+    space.add(floor)
+
+#     # Create balls with different elasticity
+def create_ball(space,position,elasticity):
+    body=pymunk.Body(1,pymunk.moment_for_circle(1,0,28))
+    body.position=position
+    shape = pymunk.Circle(body, 28)
+    shape.elasticity = elasticity
+    space.add(body, shape)
+    return body, shape
+def main():
+    pygame.init()
+    WIDTH=800
+    HEIGHT= 600
+    screen = pygame.display.set_mode((WIDTH,HEIGHT))
+    pygame.display.set_caption("Elasticity")
+    clock=pygame.time.Clock()
+    space=pymunk.Space()
+    space.gravity=(0,981)
+    draw_options = pymunk.pygame_util.DrawOptions(screen)
+    create_floor(space)
+    ball=create_ball(space, (200,200), 0.2)
+    ball2=create_ball(space, (400,200), 0.6)
+    ball3=create_ball(space, (600,200), 1.0)
+    running = True
+    while running:
+        screen.fill((0, 0, 0))  # Black background
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+#         # Update physics simulation
+        space.step(1/60)
+        
+#         # Draw objects
+        space.debug_draw(draw_options)
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
